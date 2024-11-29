@@ -1,0 +1,108 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Corpo e fundo */
+body {
+    background: linear-gradient(135deg, #ffeb99, #ffcc66); /* Gradiente suave de amarelo */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333; /* Cor de texto mais forte para maior contraste */
+}
+
+/* Container do login */
+.login-container {
+    background-color: rgba(255, 255, 255, 0.95); /* Fundo branco com mais opacidade para mais contraste */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra mais forte para destaque */
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Ícone de bebê */
+.icon {
+    font-size: 50px;
+    color: #ffcc66; /* Mantém o amarelo suave */
+    margin-bottom: 20px;
+}
+
+/* Títulos */
+h1 {
+    font-size: 2.5rem;
+    color: #333; /* Cor de título mais escura para maior contraste */
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 1.2rem;
+    color: #666; /* Cor mais suave para o subtítulo */
+    margin-bottom: 30px;
+}
+
+/* Formulário */
+form input {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ddd; /* Borda mais suave */
+    border-radius: 8px;
+    background-color: #fff;
+    color: #333; /* Cor de texto escura para boa legibilidade */
+    font-size: 1rem;
+    transition: border 0.3s;
+}
+
+/* Efeito de foco nos campos do formulário */
+form input:focus {
+    border: 1px solid #ffcc66; /* Borda amarela quando o campo está em foco */
+}
+
+/* Botão de login */
+button.btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #ffcc66; /* Amarelo suave */
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button.btn:hover {
+    background-color: #ffb84d; /* Amarelo mais intenso */
+}
+
+/* Links de opções */
+.options p {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #666; /* Cor mais suave para o texto */
+}
+
+.options a {
+    color: #ffcc66; /* Cor do link suave */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.options a:hover {
+    text-decoration: underline;
+}
+
+/* Mensagens de erro */
+.error {
+    color: #ff6f00; /* Laranja suave para erros */
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+}

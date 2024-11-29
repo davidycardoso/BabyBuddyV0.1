@@ -1,0 +1,145 @@
+/* Definindo a identidade visual amarela */
+:root {
+    --primary-color: #FFD700; /* Cor amarela */
+    --secondary-color: #333333; /* Cor escura para contraste */
+    --background-color: #f4f4f4; /* Cor de fundo suave */
+    --button-color: #FFD700;
+    --button-hover-color: #FFBF00;
+    --text-color: #333333;
+    --header-background: #FFD700;
+    --header-text-color: #FFFFFF;
+}
+
+/* Resetando margens e padding para garantir consistência */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo básico para o corpo */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Container principal */
+.agenda-container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Cabeçalho */
+h2, h3 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Título do compromisso */
+h2 {
+    font-size: 2rem;
+}
+
+/* Formulário de Compromisso */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input[type="text"],
+input[type="datetime-local"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+input[type="text"]:focus,
+input[type="datetime-local"]:focus,
+textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+/* Botão de criar compromisso e nota */
+button[type="submit"] {
+    padding: 10px 15px;
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--button-hover-color);
+}
+
+/* Lista de compromissos e notas */
+ul {
+    list-style-type: none;
+    margin-top: 20px;
+}
+
+li {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+li a {
+    color: #e74c3c;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+li a:hover {
+    text-decoration: underline;
+}
+
+/* Botão para voltar ao dashboard */
+.back-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #FFD700;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+    width: 100%;
+}
+
+.back-button:hover {
+    background-color: #eecb07;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .agenda-container {
+        width: 95%;
+        padding: 15px;
+    }
+
+    h2, h3 {
+        font-size: 1.5rem;
+    }
+}

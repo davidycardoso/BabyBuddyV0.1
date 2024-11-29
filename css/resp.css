@@ -1,0 +1,135 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Corpo e fundo */
+body {
+    background: linear-gradient(135deg, #f8e6a1, #d5e8f1); /* Gradiente suave de amarelo claro e azul bebê */
+    color: #333; /* Texto em tom escuro para contraste */
+}
+
+/* Barra de Navegação */
+.navbar {
+    background-color: #f8e6a1; /* Amarelo suave */
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar a.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+}
+
+.navbar .navbar-links a {
+    margin-left: 20px;
+    font-size: 1.2rem;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.navbar .navbar-links a:hover {
+    color: #f7b14b; /* Cor de hover mais forte */
+}
+
+/* Container Principal */
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Título */
+h2 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Dashboard Container */
+.dashboard {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Card de Informações */
+.info-box {
+    flex: 1 1 45%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.info-box:hover {
+    transform: translateY(-10px);
+}
+
+.info-box h3 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.info-box p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* Botões de Ação */
+.actions {
+    flex: 1 1 45%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.btn {
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #f8e6a1; /* Amarelo suave */
+}
+
+.btn-primary:hover {
+    background-color: #f7b14b; /* Amarelo mais intenso no hover */
+}
+
+.btn-secondary {
+    background-color: #6ec1e4; /* Azul suave */
+}
+
+.btn-secondary:hover {
+    background-color: #4f93b5; /* Azul mais intenso no hover */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .dashboard {
+        flex-direction: column;
+    }
+    
+    .info-box, .actions {
+        flex: 1 1 100%;
+    }
+}

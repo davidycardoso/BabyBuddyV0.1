@@ -1,0 +1,116 @@
+/* Resetando o estilo padrão de margens e paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Cor de fundo e fonte para o body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+/* Estilo do container do dashboard */
+.dashboard-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Título da página */
+.dashboard-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Estilo para a tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th,
+table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Cabeçalho da tabela */
+table th {
+    background-color: #f39c12;
+    color: white;
+}
+
+/* Cores alternadas para as linhas */
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Estilo dos botões */
+.btn {
+    background-color: #3498db;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+}
+
+/* Botão de voltar */
+.back-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-button {
+    background-color: #f39c12;
+    color: white;
+    padding: 12px 25px;
+    font-size: 18px;
+    text-decoration: none;
+    border-radius: 8px;
+    display: inline-block;
+    transition: background-color 0.3s, transform 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #e67e22;
+    transform: scale(1.05);
+}
+
+.back-button:active {
+    background-color: #d35400;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    table th, table td {
+        padding: 8px;
+    }
+
+    .dashboard-container {
+        padding: 15px;
+    }
+
+    .back-button {
+        width: 100%;
+        font-size: 16px;
+    }
+}
