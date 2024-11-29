@@ -57,5 +57,10 @@ $result = $conn->query($sql);
     // Fecha a conexão
     $conn->close();
     ?>
+
+    <!-- Botão para voltar ao dashboard -->
+    <div class="back-button-container">
+        <a href="guardian_dashboard.php" class="back-button">Voltar ao Dashboard</a>
+    </div>
 </body>
 </html>

@@ -1,99 +1,121 @@
-/* Estilo básico para o corpo */
+/* Estilos gerais */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f7fb;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f4f9;
     color: #333;
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
 }
 
-/* Estilo do título */
 h2 {
-    text-align: center;
+    font-size: 28px;
     margin-top: 30px;
-    color: #3a3a3a;
-}
-
-/* Contêiner principal do perfil da babá */
-.babysitter-profile {
-    width: 80%;
-    max-width: 800px;
-    margin: 20px auto;
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #333;
     text-align: center;
 }
 
-/* Foto da babá */
-.babysitter-profile img {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
+/* Container principal */
+.babysitter-profile {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+/* Foto da babá dentro do card */
+.babysitter-profile .photo-container {
     margin-bottom: 20px;
 }
 
-/* Nome da babá */
-.babysitter-profile h3 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #4c4c4c;
-    margin-bottom: 15px;
+.babysitter-profile img {
+    border-radius: 50%;
+    max-width: 200px;
+    height: 200px;
+    object-fit: cover;
 }
 
-/* Informações adicionais */
-.babysitter-profile p {
-    font-size: 16px;
-    line-height: 1.5;
-    color: #555;
-    margin-bottom: 15px;
-}
-
-/* Estilo do formulário de proposta */
-.babysitter-profile form {
-    margin-top: 20px;
+/* Informações detalhadas da babá */
+.babysitter-profile .babysitter-info {
     text-align: left;
+    margin-top: 20px;
 }
 
-.babysitter-profile textarea {
-    width: 100%;
-    height: 120px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+.babysitter-profile .babysitter-info h3 {
+    font-size: 22px;
+    color: #333; /* Cor do nome permanece a mesma */
     margin-bottom: 15px;
-    resize: none;
 }
 
-.babysitter-profile button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
+.babysitter-profile .babysitter-info p {
+    font-size: 16px;
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+.babysitter-profile .babysitter-info strong {
+    color: #f39c12; /* Cor amarela para Taxa por hora, Qualificações e Experiência */
+}
+
+/* Formulário */
+form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form textarea {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 120px;
+    max-height: 200px;
+    transition: border-color 0.3s;
+}
+
+form textarea:focus {
+    border-color: #f39c12; /* Cor amarela ao focar */
+    outline: none;
+}
+
+form button {
+    padding: 12px;
+    background-color: #f39c12; /* Cor amarela */
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    color: #fff;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s;
 }
 
-/* Hover no botão */
-.babysitter-profile button:hover {
-    background-color: #0056b3;
+form button:hover {
+    background-color: #e67e22; /* Cor amarela mais escura */
 }
 
-/* Link de voltar para a lista de babás */
-.babysitter-profile a {
-    display: inline-block;
-    margin-top: 20px;
-    font-size: 16px;
-    color: #007bff;
+/* Link de navegação */
+a {
     text-decoration: none;
-    font-weight: 600;
+    color: #f39c12; /* Cor amarela */
+    font-size: 16px;
+    margin-top: 20px;
+    display: block;
+    text-align: center;
 }
 
-.babysitter-profile a:hover {
+a:hover {
     text-decoration: underline;
 }
+
+

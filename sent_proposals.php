@@ -33,7 +33,7 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <title>Minhas Propostas</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/view.css">
 </head>
 <body>
 
@@ -62,7 +62,14 @@ $result = $stmt->get_result();
             <?php endwhile; ?>
         </tbody>
     </table>
+
+    <!-- Botão para voltar ao dashboard -->
+    <div class="back-button-container">
+        <a href="guardian_dashboard.php" class="back-button">Voltar ao Dashboard</a>
+    </div>
+
 </div>
 
 </body>
 </html>
+

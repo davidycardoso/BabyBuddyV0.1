@@ -8,14 +8,37 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'babysitter') {
     exit();
 }
 
-// Consulta as avaliações feitas para a babá logada
+// Verifica os filtros de data ou avaliação
+$date_filter = isset($_GET['date']) ? $_GET['date'] : '';
+$rating_filter = isset($_GET['rating']) ? $_GET['rating'] : '';
+
+// Consulta as avaliações feitas para a babá logada com filtros aplicados
 $sql = "SELECT r.rating, r.comment, r.created_at, g.name AS guardian_name
         FROM reviews r
         JOIN guardians g ON r.guardian_id = g.id
-        WHERE r.babysitter_id = ?
-        ORDER BY r.created_at DESC";
+        WHERE r.babysitter_id = ?";
+
+// Aplica filtro de data, se houver
+if ($date_filter) {
+    $sql .= " AND DATE(r.created_at) = ?";
+}
+
+// Aplica filtro de rating, se houver
+if ($rating_filter) {
+    $sql .= " AND r.rating = ?";
+}
+
+$sql .= " ORDER BY r.created_at DESC";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $_SESSION['user_id']);
+if ($date_filter && $rating_filter) {
+    $stmt->bind_param("iss", $_SESSION['user_id'], $date_filter, $rating_filter);
+} elseif ($date_filter) {
+    $stmt->bind_param("is", $_SESSION['user_id'], $date_filter);
+} elseif ($rating_filter) {
+    $stmt->bind_param("ii", $_SESSION['user_id'], $rating_filter);
+} else {
+    $stmt->bind_param("i", $_SESSION['user_id']);
+}
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -49,12 +72,32 @@ function render_stars($rating) {
 <head>
     <meta charset="UTF-8">
     <title>Minhas Avaliações</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/reviews.css">
 </head>
 <body>
 
 <div class="reviews-container">
     <h2>Minhas Avaliações</h2>
+
+    <!-- Filtros -->
+    <div class="filters">
+        <form method="get" action="">
+            <label for="date">Filtrar por Data:</label>
+            <input type="date" name="date" value="<?php echo $date_filter; ?>" />
+
+            <label for="rating">Filtrar por Avaliação:</label>
+            <select name="rating">
+                <option value="">Todas as Avaliações</option>
+                <option value="1" <?php echo ($rating_filter == '1') ? 'selected' : ''; ?>>1 Estrela</option>
+                <option value="2" <?php echo ($rating_filter == '2') ? 'selected' : ''; ?>>2 Estrelas</option>
+                <option value="3" <?php echo ($rating_filter == '3') ? 'selected' : ''; ?>>3 Estrelas</option>
+                <option value="4" <?php echo ($rating_filter == '4') ? 'selected' : ''; ?>>4 Estrelas</option>
+                <option value="5" <?php echo ($rating_filter == '5') ? 'selected' : ''; ?>>5 Estrelas</option>
+            </select>
+
+            <button type="submit">Filtrar</button>
+        </form>
+    </div>
 
     <!-- Média das avaliações em estrelas -->
     <div class="average-rating">
@@ -80,6 +123,9 @@ function render_stars($rating) {
     <?php else: ?>
         <p>Você ainda não tem avaliações.</p>
     <?php endif; ?>
+
+    <!-- Botão de Voltar para o Dashboard -->
+    <a href="babysitter_dashboard.php" class="back-btn">Voltar para o Dashboard</a>
 </div>
 
 </body>

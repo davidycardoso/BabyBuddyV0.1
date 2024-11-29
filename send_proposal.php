@@ -19,13 +19,42 @@ if (isset($_POST['babysitter_id']) && isset($_POST['proposal_message'])) {
     $stmt->bind_param("iis", $babysitter_id, $guardian_id, $proposal_message);
 
     if ($stmt->execute()) {
-        echo "Proposta enviada com sucesso!";
+        $success_message = "Proposta enviada com sucesso!";
     } else {
-        echo "Erro ao enviar a proposta. Tente novamente.";
+        $error_message = "Erro ao enviar a proposta. Tente novamente.";
     }
 } else {
-    echo "Dados da proposta não foram enviados corretamente.";
+    $error_message = "Dados da proposta não foram enviados corretamente.";
 }
 
 $conn->close();
 ?>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposta Enviada</title>
+    <link rel="stylesheet" href="css/proposta.css">
+    <script>
+        // Redireciona após 3 segundos
+        setTimeout(function() {
+            window.location.href = "babysitter_list.php";  // Redireciona para a lista de babás
+        }, 3000);
+    </script>
+</head>
+<body>
+    <div class="message-container">
+        <?php if (isset($success_message)): ?>
+            <div class="success-message">
+                <p><?php echo $success_message; ?></p>
+            </div>
+        <?php elseif (isset($error_message)): ?>
+            <div class="error-message">
+                <p><?php echo $error_message; ?></p>
+            </div>
+        <?php endif; ?>
+    </div>
+</body>
+</html>
+

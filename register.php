@@ -22,24 +22,47 @@ if (isset($_POST['register'])) {
     // Criptografa a senha
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    // Insere os dados no banco
-    if ($user_type == 'babysitter') {
-        $sql = "INSERT INTO babysitters (name, email, password, latitude, longitude) VALUES (?, ?, ?, ?, ?)";
-    } else {
-        $sql = "INSERT INTO guardians (name, email, password) VALUES (?, ?, ?)";
+    // Processa a foto
+    $photo = '';
+    if ($user_type == 'babysitter' && isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+        $photo_name = $_FILES['photo']['name'];
+        $photo_tmp_name = $_FILES['photo']['tmp_name'];
+        $photo_size = $_FILES['photo']['size'];
+        $photo_ext = strtolower(pathinfo($photo_name, PATHINFO_EXTENSION));
+
+        // Verifica se a extensão da imagem é válida
+        $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+        if (in_array($photo_ext, $allowed_extensions)) {
+            // Gera um nome único para a foto e move para o diretório de uploads
+            $photo_new_name = uniqid('', true) . '.' . $photo_ext;
+            $photo_target = 'uploads/' . $photo_new_name;
+
+            if (move_uploaded_file($photo_tmp_name, $photo_target)) {
+                $photo = $photo_target; // Caminho da foto
+            }
+        }
     }
 
-    $stmt = $conn->prepare($sql);
+    // Insere os dados no banco
     if ($user_type == 'babysitter') {
-        $stmt->bind_param("sssss", $name, $email, $hashed_password, $latitude, $longitude);
+        $hourly_rate = $_POST['hourly_rate']; // Taxa por hora
+        $qualifications = $_POST['qualifications']; // Qualificações
+        $experience = $_POST['experience']; // Experiência
+
+        $sql = "INSERT INTO babysitters (name, email, password, latitude, longitude, photo, hourly_rate, qualifications, experience) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssssssss", $name, $email, $hashed_password, $latitude, $longitude, $photo, $hourly_rate, $qualifications, $experience);
     } else {
+        $sql = "INSERT INTO guardians (name, email, password) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
         $stmt->bind_param("sss", $name, $email, $hashed_password);
     }
 
     if ($stmt->execute()) {
         echo "Cadastro realizado com sucesso!";
     } else {
-        echo "Erro ao cadastrar!";
+        echo "Erro ao cadastrar: " . $stmt->error;
     }
 }
 ?>
@@ -50,7 +73,7 @@ if (isset($_POST['register'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro - BabyBuddy</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/register.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome -->
 </head>
@@ -74,13 +97,13 @@ if (isset($_POST['register'])) {
             <!-- Campos adicionais para a babá -->
             <div id="babysitter_fields" style="display: none;">
                 <input type="file" name="photo" accept="image/*">
-                <input type="number" name="hourly_rate" placeholder="Taxa por hora">
-                <textarea name="qualifications" placeholder="Qualificações"></textarea>
-                <textarea name="experience" placeholder="Experiência anterior"></textarea>
+                <input type="number" name="hourly_rate" placeholder="Taxa por hora" required>
+                <textarea name="qualifications" placeholder="Qualificações" required></textarea>
+                <textarea name="experience" placeholder="Experiência anterior" required></textarea>
 
                 <!-- Latitude e Longitude serão preenchidos automaticamente -->
-                <input type="text" id="latitude" name="latitude" placeholder="Latitude" readonly>
-                <input type="text" id="longitude" name="longitude" placeholder="Longitude" readonly>
+                <input type="text" id="latitude" name="latitude" placeholder="Latitude" readonly required>
+                <input type="text" id="longitude" name="longitude" placeholder="Longitude" readonly required>
                 
                 <!-- Botão para capturar a localização -->
                 <button type="button" onclick="getLocation()">Obter Localização</button>
@@ -102,7 +125,7 @@ if (isset($_POST['register'])) {
 
                 if (this.value === 'babysitter') {
                     babysitterFields.style.display = 'block';
-                    babysitterInputs.forEach(input => input.removeAttribute('required'));
+                    babysitterInputs.forEach(input => input.setAttribute('required', 'required'));
                 } else {
                     babysitterFields.style.display = 'none';
                     babysitterInputs.forEach(input => input.removeAttribute('required'));

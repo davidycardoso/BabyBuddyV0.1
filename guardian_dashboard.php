@@ -20,18 +20,33 @@ $guardian = $result->fetch_assoc();
 <head>
     <meta charset="UTF-8">
     <title>Dashboard do Responsável</title>
-    <link href="css/styles.css" rel="stylesheet">
+    <link href="css/resp.css" rel="stylesheet">
 </head>
 <body>
+    <div class="navbar">
+        <a href="index.php" class="logo">BabyBuddy</a>
+        <div class="navbar-links">
+            <a href="babysitter_list.php?latitude=123.456&longitude=789.012">Babás Próximas</a>
+            <a href="sent_proposals.php">Minhas Propostas</a>
+            <a href="logout.php">Sair</a>
+        </div>
+    </div>
+    
     <div class="container mt-5">
         <h2>Bem-vindo, <?php echo htmlspecialchars($guardian['name']); ?></h2>
         
-        <div class="mt-3">
-            <a href="babysitter_list.php?latitude=123.456&longitude=789.012" class="btn btn-primary">Ver Babás Próximas</a>
-            <a href="sent_proposals.php" class="btn btn-secondary">Minhas Propostas</a>
-            <a href="logout.php" class="btn btn-danger">Sair</a>
+        <div class="dashboard">
+            <section class="info-box">
+                <h3>Resumo</h3>
+                <p>Nome: <?php echo htmlspecialchars($guardian['name']); ?></p>
+                <p>Email: <?php echo htmlspecialchars($guardian['email']); ?></p>
+            </section>
+            
+            <section class="actions">
+                <a href="babysitter_list.php?latitude=123.456&longitude=789.012" class="btn btn-primary">Ver Babás Próximas</a>
+                <a href="sent_proposals.php" class="btn btn-secondary">Minhas Propostas</a>
+            </section>
         </div>
     </div>
 </body>
 </html>
-

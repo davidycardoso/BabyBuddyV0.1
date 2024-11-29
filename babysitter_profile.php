@@ -49,26 +49,31 @@ if (isset($_GET['babysitter_id'])) {
     <h2>Perfil de <?php echo $name; ?></h2>
 
     <div class="babysitter-profile">
-        <!-- Exibe a foto da babá -->
-        <?php if (!empty($photo) && file_exists("uploads/$photo")) { ?>
-            <img src="uploads/<?php echo $photo; ?>" alt="<?php echo $name; ?>" width="200" height="200">
+    <!-- Foto da babá -->
+    <div class="photo-container">
+        <?php if (!empty($photo) && file_exists("uploads/" . basename($photo))) { ?>
+            <img src="uploads/<?php echo basename($photo); ?>" alt="<?php echo $name; ?>" width="200" height="200">
         <?php } else { ?>
             <img src="default-avatar.jpg" alt="Imagem de <?php echo $name; ?>" width="200" height="200">
         <?php } ?>
+    </div>
 
-        <!-- Exibe as informações detalhadas da babá -->
+    <!-- Informações detalhadas da babá -->
+    <div class="babysitter-info">
         <h3>Nome: <?php echo $name; ?></h3>
         <p><strong>Taxa por hora:</strong> R$ <?php echo number_format($hourly_rate, 2, ',', '.'); ?></p>
         <p><strong>Qualificações:</strong> <?php echo nl2br($qualifications); ?></p>
         <p><strong>Experiência:</strong> <?php echo nl2br($experience); ?></p>
-
-        <!-- Formulário para enviar proposta -->
-        <form action="send_proposal.php" method="POST">
-            <input type="hidden" name="babysitter_id" value="<?php echo $babysitter_id; ?>">
-            <textarea name="proposal_message" placeholder="Escreva sua proposta..." required></textarea><br>
-            <button type="submit">Enviar Proposta</button>
-        </form>
     </div>
+
+    <!-- Formulário para enviar proposta -->
+    <form action="send_proposal.php" method="POST">
+        <input type="hidden" name="babysitter_id" value="<?php echo $babysitter_id; ?>">
+        <textarea name="proposal_message" placeholder="Escreva sua proposta..." required></textarea><br>
+        <button type="submit">Enviar Proposta</button>
+    </form>
+</div>
+
 
     <a href="babysitter_list.php">Voltar para a lista de babás</a>
 </body>

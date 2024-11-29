@@ -72,7 +72,7 @@ $babysitter = $result->fetch_assoc();
 <head>
     <meta charset="UTF-8">
     <title>Editar Perfil</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/edit.css">
 </head>
 <body>
 

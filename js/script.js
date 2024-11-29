@@ -14,16 +14,31 @@ function showSlide(index) {
     });
 }
 
+// Função para atualizar a progress bar
+function updateProgressBar(index) {
+    progressBars.forEach((bar, i) => {
+        if (i === index) {
+            bar.style.width = '100%';
+            bar.style.transition = 'width 3s linear'; // Transição suave
+        } else {
+            bar.style.width = '0%';
+            bar.style.transition = 'none';
+        }
+    });
+}
+
 // Função para ir para o próximo slide
 function nextSlide() {
     currentSlide = (currentSlide + 1) % totalSlides;
     showSlide(currentSlide);
+    updateProgressBar(currentSlide);
 }
 
 // Função para ir para o slide anterior
 function prevSlide() {
     currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
     showSlide(currentSlide);
+    updateProgressBar(currentSlide);
 }
 
 // Função para iniciar o autoavançar os slides
@@ -53,12 +68,12 @@ document.getElementById('prev').addEventListener('click', () => {
 document.querySelector('.hero').addEventListener('mouseover', stopSlideInterval);
 document.querySelector('.hero').addEventListener('mouseout', startSlideInterval);
 
-// Inicializa o slide e o intervalo
-showSlide(currentSlide);
-startSlideInterval();
-
-
-// Adiciona um listener para o evento de scroll no elemento "hero"
+// Permite scroll fora do slide
 document.querySelector('.hero').addEventListener('wheel', (event) => {
-    event.preventDefault(); // Impede a rolagem padrão
+    event.stopPropagation();
 });
+
+// Inicializa o slide, progress bar e intervalo
+showSlide(currentSlide);
+updateProgressBar(currentSlide);
+startSlideInterval();

@@ -1,0 +1,23 @@
+.message-container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.success-message, .error-message {
+    background-color: #f39c12; /* Cor amarela para o sucesso */
+    color: white;
+    padding: 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    margin: 10px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.error-message {
+    background-color: #e74c3c; /* Cor vermelha para erro */
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}

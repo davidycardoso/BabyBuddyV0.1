@@ -11,7 +11,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'babysitter') {
 // Pega o ID da babá logada
 $babysitter_id = $_SESSION['user_id'];
 
-// Consulta para pegar as propostas
+// Verifica se há um filtro de status
+$status_filter = isset($_GET['status']) ? $_GET['status'] : '';
+
+// Consulta para pegar as propostas, considerando o filtro de status
 $sql = "
     SELECT p.id, g.name AS guardian_name, p.status
     FROM proposals p
@@ -19,12 +22,23 @@ $sql = "
     WHERE p.babysitter_id = ?
 ";
 
+// Aplica o filtro de status, se houver
+if (!empty($status_filter)) {
+    $sql .= " AND p.status = ?";
+}
+
 $stmt = $conn->prepare($sql);
 if ($stmt === false) {
     die("Erro ao preparar a consulta SQL: " . $conn->error);
 }
 
-$stmt->bind_param("i", $babysitter_id);
+// Se houver filtro, bind para o status
+if (!empty($status_filter)) {
+    $stmt->bind_param("is", $babysitter_id, $status_filter);
+} else {
+    $stmt->bind_param("i", $babysitter_id);
+}
+
 if ($stmt->execute() === false) {
     die("Erro ao executar a consulta: " . $stmt->error);
 }
@@ -40,12 +54,26 @@ if ($result === false) {
 <head>
     <meta charset="UTF-8">
     <title>Propostas Detalhadas</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/proposals.css">
 </head>
 <body>
 
 <div class="proposals-container">
     <h2>Propostas Detalhadas</h2>
+
+    <!-- Filtro de Status -->
+    <form method="get" action="" class="filter-form">
+        <label for="status">Filtrar por Status:</label>
+        <select name="status" id="status" onchange="this.form.submit()">
+            <option value="">Todos</option>
+            <option value="pendente" <?php echo ($status_filter == 'pendente') ? 'selected' : ''; ?>>Pendentes</option>
+            <option value="aceita" <?php echo ($status_filter == 'aceita') ? 'selected' : ''; ?>>Aceitas</option>
+            <option value="rejeitada" <?php echo ($status_filter == 'rejeitada') ? 'selected' : ''; ?>>Rejeitadas</option>
+            <option value="em_andamento" <?php echo ($status_filter == 'em_andamento') ? 'selected' : ''; ?>>Em Andamento</option>
+            <option value="concluida" <?php echo ($status_filter == 'concluida') ? 'selected' : ''; ?>>Concluídas</option>
+        </select>
+    </form>
+
     <table>
         <thead>
             <tr>
@@ -63,14 +91,14 @@ if ($result === false) {
                     echo "<tr>";
                     echo "<td>" . $proposal['id'] . "</td>";
                     echo "<td>" . $proposal['guardian_name'] . "</td>";
-                    echo "<td>" . $proposal['status'] . "</td>";
+                    echo "<td>" . ucfirst($proposal['status']) . "</td>";
                     echo "<td>";
                     // Exibe o link para visualizar os detalhes da proposta
-                    echo '<a href="view_proposal.php?id=' . $proposal['id'] . '">Ver Detalhes</a>';
+                    echo '<a href="view_proposal_babysitter.php?id=' . $proposal['id'] . '">Ver Detalhes</a>';
                     
                     // Verifica o status da proposta e exibe os botões de aceitar ou rejeitar
-                    if ($proposal['status'] == 'sent') {
-                        // Mostrar botões de ação se a proposta estiver no status 'sent'
+                    if ($proposal['status'] == 'pendente') {
+                        // Mostrar botões de ação se a proposta estiver no status 'pendente'
                         echo ' <a href="accept_proposal.php?id=' . $proposal['id'] . '">Aceitar</a>';
                         echo ' <a href="reject_proposal.php?id=' . $proposal['id'] . '">Rejeitar</a>';
                     }
@@ -84,6 +112,8 @@ if ($result === false) {
             ?>
         </tbody>
     </table>
+
+    <a href="babysitter_dashboard.php" class="back-btn">Voltar para o Dashboard</a>
 </div>
 
 </body>

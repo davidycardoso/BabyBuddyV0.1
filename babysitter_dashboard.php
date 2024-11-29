@@ -22,6 +22,16 @@ $stmt->execute();
 $result = $stmt->get_result();
 $babysitter = $result->fetch_assoc();
 
+// Consulta para pegar os compromissos da babá
+$sql_agenda = "SELECT * FROM appointments WHERE babysitter_id = ? ORDER BY appointment_date ASC";
+$stmt_agenda = $conn->prepare($sql_agenda);
+if ($stmt_agenda === false) {
+    die('Erro na preparação da consulta de agenda: ' . $conn->error);
+}
+$stmt_agenda->bind_param("i", $babysitter_id);
+$stmt_agenda->execute();
+$result_agenda = $stmt_agenda->get_result();
+
 // Consulta para pegar o número de propostas pendentes
 $sql_proposals = "SELECT COUNT(*) as pending_count FROM proposals WHERE babysitter_id = ? AND status = 'sent'";
 $stmt_proposals = $conn->prepare($sql_proposals);
@@ -44,17 +54,6 @@ $stmt_all_proposals->execute();
 $result_all_proposals = $stmt_all_proposals->get_result();
 $total_proposals = $result_all_proposals->fetch_assoc();
 
-// Consulta para pegar as notificações da babá
-$sql_notifications = "SELECT COUNT(*) as notification_count FROM notifications WHERE babysitter_id = ? AND status = 'unread'";
-$stmt_notifications = $conn->prepare($sql_notifications);
-if ($stmt_notifications === false) {
-    die('Erro na preparação da consulta de notificações: ' . $conn->error);
-}
-$stmt_notifications->bind_param("i", $babysitter_id);
-$stmt_notifications->execute();
-$result_notifications = $stmt_notifications->get_result();
-$notification_count = $result_notifications->fetch_assoc();
-
 // Consulta para pegar as avaliações da babá
 $sql_reviews = "SELECT AVG(rating) as average_rating, COUNT(*) as total_reviews FROM reviews WHERE babysitter_id = ?";
 $stmt_reviews = $conn->prepare($sql_reviews);
@@ -72,18 +71,18 @@ $reviews = $result_reviews->fetch_assoc();
 <head>
     <meta charset="UTF-8">
     <title>Dashboard da Babá</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/baba.css">
 </head>
 <body>
 
 <div class="dashboard-container">
     <!-- Informações da Babá -->
     <div class="babysitter-info">
-        <img src="<?php echo $babysitter['photo'] ?: 'default-avatar.jpg'; ?>" alt="Foto da Babá" class="profile-photo">
+        <img src="<?php echo !empty($babysitter['photo']) ? $babysitter['photo'] : 'default-avatar.jpg'; ?>" alt="Foto da Babá" class="profile-photo">
         <h2><?php echo $babysitter['name']; ?></h2>
         <p><strong>Propostas Pendentes:</strong> <?php echo $pending_proposals['pending_count']; ?></p>
         <p><strong>Total de Propostas:</strong> <?php echo $total_proposals['total_count']; ?></p>
-        
+
         <!-- Botões de Editar Perfil e Logout -->
         <div class="action-buttons">
             <a href="edit-profile.php" class="btn-edit">Editar Perfil</a>
@@ -100,11 +99,24 @@ $reviews = $result_reviews->fetch_assoc();
         </ul>
     </div>
 
-    <!-- Notificações -->
-    <div class="notifications">
-        <h3>Notificações</h3>
-        <p>Você tem <strong><?php echo $notification_count['notification_count']; ?></strong> nova(s) notificação(ões).</p>
-        <a href="notifications.php">Ver Notificações</a>
+    <!-- Agenda -->
+    <div class="agenda-card">
+        <h3>Agenda de Compromissos</h3>
+        <?php if ($result_agenda->num_rows > 0) { ?>
+            <ul>
+                <?php while ($agenda = $result_agenda->fetch_assoc()) { ?>
+                    <li>
+                        <strong><?php echo htmlspecialchars($agenda['title']); ?></strong><br>
+                        <?php echo htmlspecialchars($agenda['description']); ?><br>
+                        <strong>Data: </strong> <?php echo date('d/m/Y H:i', strtotime($agenda['appointment_date'])); ?><br>
+                        <strong>Notas: </strong> <?php echo htmlspecialchars($agenda['notes']); ?>
+                    </li>
+                <?php } ?>
+            </ul>
+        <?php } else { ?>
+            <p>Você não tem compromissos agendados.</p>
+        <?php } ?>
+        <a href="agenda.php" class="btn-go-to-agenda">Ver Agenda Completa</a>
     </div>
 
     <!-- Avaliações -->
@@ -119,7 +131,6 @@ $reviews = $result_reviews->fetch_assoc();
     <div class="proposals-link">
         <a href="proposals.php">Ver Propostas Detalhadas</a>
     </div>
-
 </div>
 
 </body>
